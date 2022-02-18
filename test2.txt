@@ -1,0 +1,53 @@
+Q1a. RPA isban open-source automation framework for acceptance testing and robotic process automation (RPA). 
+It is an application and platform independent project with a growing ecosystem of external tools and libraries.
+The source code for this framework can be accessed publicly through GitHub and the maintainers provide guidelines on how anyone can contribute to it.
+Contributions to the framework can also be done in other ways too. Such as helping with the various tools and libraries displayed on Robot Framework’s website, 
+the curated awesome-robotframework list, or the Robot Framework Market Square.
+
+One of the key features that draws users to this framework is its accessible and legible tabular syntax. This syntax can be used to create suites of tests or RPA tasks written in simple natural language phrases. It also provides capabilities that allow you to leverage existing built-in, external, or custom keywords for creating other reusable high-level keywords. While running this framework it automatically generates clear and detailed result logs and reports in HTML, and also useful XML output files for results post-processing.
+The framework also has a tagging feature for categorizing tests or tasks, and can also be used to select which one should run next. It provides a command-line interface that allows easy installation into an existing continuous integration system or build infrastructure.
+
+Q1b. 
+1. Install VScode with Robocorp Code extension. VSCode is a complete Integrated Development Environment (IDE) and free to use! 
+2. Create robot and select Robocorp: Create robot 
+3. Select the standard roboto framework template 
+4. use workplace folder 
+5. Open the task, tasks.robot. 
+6. In robot's task, first, Defining library to use. It contains all the tools need for the task. This is placed under the setting section. 
+7. next,  Defining task. this section defines the tasks for the robot
+
+Q2 
+*** Settings ***
+Documentation     Read and extact information from website and export as pdf 
+Library     RPA.Browser.Selenium
+Library     RPA.Excel.Files
+Library     RPA.HTTP
+Library     RPA.PDF
+
+*** Tasks ***
+Read and extact information from website and export as pdf 
+    Open the intranet website
+    take screenshot  
+    Open pdf and extract info 
+    Export the text into excel
+
+
+*** Keywords ***
+Open the intranet website
+    Open Available Browser    https://www.kaggle.com/sidasj/invoice
+
+take screenshot 
+    Screenshot    css:div.invoice    ${OUTPUT_DIR}${/}invoice.pdf
+
+Open pdf and extract info
+    Open pdf    invoice.pdf 
+    ${matches}=   Find Text     Total Due     Tax 
+    Log list     ${matches}
+
+Export the text into excel
+    Create Workbook     invoice.xlsx
+    Set worksheet Value     1     1    Tax 
+    Set Worksheet Value     1     1    Total Due 
+    ${response} = Http get     https://www.kaggle.com/sidasj/invoice
+Minimal task
+    Log    Done.
